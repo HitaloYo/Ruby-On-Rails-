@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YoYo Compras - Lista de Compras</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4b6cb7;
+            --secondary: #182848;
+            --accent: #FE6B8B;
+            --accent-gradient: linear-gradient(45deg, #FF8E53, #FE6B8B);
+            --light: #f5f7fa;
+            --dark: #333;
+            --gray: #555;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --info: #17a2b8;
+            --export: #20c997;
+            --border-radius: 12px;
+            --box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--dark);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* NAVBAR MODERNA */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            color: var(--dark);
+            padding: 15px 0;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(75, 108, 183, 0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            transition: var(--transition);
+            margin-right: 30px;
+        }
+        
+        .logo:hover {
+            transform: translateY(-2px);
+        }
+        
+        .logo i {
+            color: #FFD700;
+            font-size: 2rem;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* Navegação moderna */
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        nav li {
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            position: relative;
+            margin: 0 2px;
+        }
+        
+        nav li:not(.btn-container):hover {
+            background: rgba(75, 108, 183, 0.05);
+        }
+        
+        nav a {
+            color: var(--dark);
+            text-decoration: none;
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        
+        nav a i {
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+        }
+        
+        nav a:hover {
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+        
+        .ativo {
+            background: rgba(255, 215, 0, 0.15);
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .ativo::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 20%;
+            width: 60%;
+            height: 3px;
+            background: var(--accent-gradient);
+            border-radius: 3px;
+        }
+        
+        .btn-compras {
+            background: var(--accent-gradient);
+            color: white;
+            padding: 12px 22px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(254, 107, 139, 0.3);
+            margin-left: 5px;
+        }
+        
+        .btn-compras:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(254, 107, 139, 0.4);
+        }
+        
+        /* Menu mobile */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-around;
+            width: 30px;
+            height: 25px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+        }
+        
+        .menu-toggle span {
+            width: 100%;
+            height: 3px;
+            background-color: var(--primary);
+            border-radius: 2px;
+            transition: var(--transition);
+        }
+        
+        /* Conteúdo principal */
+        .compras-container {
+            background: white;
+            padding: 2.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin-bottom: 30px;
+        }
+        
+        .compras-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid rgba(75, 108, 183, 0.1);
+        }
+        
+        .compras-header h1 {
+            color: var(--primary);
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        
+        .compras-header p {
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+        
+        /* Formulário de adição */
+        .adicionar-item {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .adicionar-item h2 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr auto;
+            gap: 12px;
+            align-items: end;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group label {
+            font-weight: 500;
+            margin-bottom: 6px;
+            color: var(--dark);
+            font-size: 0.9rem;
+        }
+        
+        .form-group input, .form-group select {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(75, 108, 183, 0.2);
+        }
+        
+        .btn-adicionar {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            padding: 12px 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-adicionar:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+        
+        /* Tabela de itens */
+        .tabela-container {
+            overflow-x: auto;
+            border-radius: var(--border-radius);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+        
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        th {
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+        }
+        
+        tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .acoes {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .btn-editar, .btn-excluir {
+            padding: 8px 12px;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .btn-editar {
+            background: var(--warning);
+            color: black;
+        }
+        
+        .btn-editar:hover {
+            background: #e0a800;
+        }
+        
+        .btn-excluir {
+            background: var(--danger);
+            color: white;
+        }
+        
+        .btn-excluir:hover {
+            background: #c82333;
+        }
+        
+        .quantidade-controle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-quantidade {
+            width: 30px;
+            height: 30px;
+            border: none;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+        
+        .btn-quantidade:hover {
+            background: var(--secondary);
+        }
+        
+        .quantidade-value {
+            min-width: 30px;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        /* Resumo */
+        .resumo {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .total-itens {
+            font-weight: 600;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .btn-limpar, .btn-imprimir, .btn-exportar {
+            background: var(--danger);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-imprimir {
+            background: var(--info);
+        }
+        
+        .btn-imprimir:hover {
+            background: #138496;
+            transform: translateY(-2px);
+        }
+        
+        .btn-exportar {
+            background: var(--export);
+        }
+        
+        .btn-exportar:hover {
+            background: #199d7a;
+            transform: translateY(-2px);
+        }
+        
+        .btn-limpar:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+        }
+        
+        .botoes-acoes {
+            display: flex;
+            gap: 10px;
+        }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 40px;
+            color: var(--gray);
+            border-top: 1px solid #ddd;
+        }
+        
+        footer p {
+            margin-bottom: 10px;
+        }
+        
+        /* Responsividade */
+        @media (max-width: 1024px) {
+            nav ul {
+                gap: 6px;
+            }
+            
+            nav a {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .btn-compras {
+                padding: 10px 18px;
+                font-size: 0.9rem;
+            }
+            
+            .logo {
+                margin-right: 20px;
+            }
+        }
+        
+        @media (max-width: 900px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            nav ul {
+                justify-content: center;
+            }
+            
+            .menu-toggle {
+                display: flex;
+                position: absolute;
+                top: 20px;
+                right: 20px;
+            }
+            
+            nav ul {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                gap: 10px;
+                margin-top: 15px;
+            }
+            
+            nav ul.active {
+                display: flex;
+            }
+            
+            nav li {
+                width: 100%;
+                text-align: center;
+            }
+            
+            .ativo::after {
+                display: none;
+            }
+            
+            .logo {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .compras-container {
+                padding: 1.5rem;
+            }
+            
+            th, td {
+                padding: 0.75rem;
+            }
+            
+            .acoes {
+                flex-direction: column;
+            }
+            
+            .quantidade-controle {
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            .resumo {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .botoes-acoes {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .btn-limpar, .btn-imprimir, .btn-exportar {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* Efeito de foco para melhor acessibilidade */
+        button:focus, a:focus, input:focus, select:focus {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+        
+        /* Status de compra */
+        .comprado {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+        
+        .btn-comprado {
+            background: var(--success);
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .btn-comprado:hover {
+            background: #218838;
+        }
+        
+        /* Estilos para impressão */
+        @media print {
+            header, .adicionar-item, .acoes, .resumo, footer {
+                display: none !important;
+            }
+            
+            body, .compras-container {
+                background: white;
+                color: black;
+                box-shadow: none;
+                padding: 0;
+                margin: 0;
+            }
+            
+            .compras-container {
+                padding: 0;
+                border: none;
+            }
+            
+            .compras-header {
+                text-align: center;
+                margin-bottom: 1rem;
+            }
+            
+            .compras-header h1 {
+                color: black;
+                font-size: 24px;
+            }
+            
+            table {
+                width: 100%;
+                border: 1px solid #ddd;
+            }
+            
+            th {
+                background: #f0f0f0 !important;
+                color: black !important;
+            }
+            
+            .comprado {
+                text-decoration: line-through;
+                opacity: 0.6;
+            }
+            
+            .btn-comprado {
+                border: 1px solid #ddd;
+                background: white;
+                color: black;
+            }
+            
+            .container {
+                max-width: 100%;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="/" class="logo">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>YoYo Compras</span>
+                </a>
+                
+                <button class="menu-toggle" aria-label="Abrir menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                
+                <nav>
+                    <ul>
+                        <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
+                        <li class="ativo"><a href="/compras"><i class="fas fa-calendar-alt"></i> Compras</a></li> 
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="compras-container">
+            <div class="compras-header">
+                <h1><i class="fas fa-shopping-basket"></i> Minha Lista de Compras</h1>
+                <p>Organize seus itens do supermercado de forma prática</p>
+            </div>
+            
+            <div class="adicionar-item">
+                <h2><i class="fas fa-plus-circle"></i> Adicionar Item</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="item">Item</label>
+                        <input type="text" id="item" placeholder="Ex: Arroz, Leite, Café...">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="quantidade">Quantidade</label>
+                        <input type="number" id="quantidade" min="1" value="1">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="categoria">Categoria</label>
+                        <select id="categoria">
+                            <option value="alimentos">Alimentos</option>
+                            <option value="bebidas">Bebidas</option>
+                            <option value="limpeza">Limpeza</option>
+                            <option value="hortifruti">Hortifruti</option>
+                            <option value="Legumes">Legumes</option>
+                            <option value="outros">Outros</option>
+                        </select>
+                    </div>
+                    
+                    <button class="btn-adicionar" onclick="adicionarItem()">
+                        <i class="fas fa-plus"></i> Adicionar
+                    </button>
+                </div>
+            </div>
+            
+            <div class="tabela-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Status</th>
+                            <th>Item</th>
+                            <th>Quantidade</th>
+                            <th>Categoria</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lista-compras">
+                        <!-- Itens serão adicionados aqui via JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="resumo">
+                <div class="total-itens">
+                    <i class="fas fa-shopping-basket"></i>
+                    <span id="total-itens">0 itens na lista</span> | 
+                    <span id="itens-comprados">0 comprados</span>
+                </div>
+                <div class="botoes-acoes">
+                    <button class="btn-exportar" onclick="exportarPlanilha()">
+                        <i class="fas fa-file-excel"></i> Exportar
+                    </button>
+                    <button class="btn-imprimir" onclick="imprimirLista()">
+                        <i class="fas fa-print"></i> Imprimir
+                    </button>
+                    <button class="btn-limpar" onclick="limparLista()">
+                        <i class="fas fa-trash"></i> Limpar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>© 2023 YoYo Compras - Todos os direitos reservados</p>
+            <p>Desenvolvido com <i class="fas fa-heart" style="color: #FE6B8B;"></i> para amantes de boa comida</p>
+        </div>
+    </footer>
+
+    <script>
+        // Array para armazenar os itens
+        let listaCompras = [];
+        
+        // Elementos do DOM
+        const listaElement = document.getElementById('lista-compras');
+        const totalItensElement = document.getElementById('total-itens');
+        const itensCompradosElement = document.getElementById('itens-comprados');
+        
+        // Função para adicionar item
+        function adicionarItem() {
+            const itemInput = document.getElementById('item');
+            const quantidadeInput = document.getElementById('quantidade');
+            const categoriaSelect = document.getElementById('categoria');
+            
+            const item = itemInput.value.trim();
+            const quantidade = parseInt(quantidadeInput.value);
+            const categoria = categoriaSelect.value;
+            
+            if (item === '') {
+                alert('Por favor, digite o nome do item.');
+                return;
+            }
+            
+            if (isNaN(quantidade) || quantidade < 1) {
+                alert('Por favor, digite uma quantidade válida.');
+                return;
+            }
+            
+            // Adicionar à lista
+            listaCompras.push({
+                id: Date.now(), // ID único baseado no timestamp
+                nome: item,
+                quantidade: quantidade,
+                categoria: categoria,
+                comprado: false
+            });
+            
+            // Limpar campos
+            itemInput.value = '';
+            quantidadeInput.value = '1';
+            
+            // Atualizar a exibição
+            renderizarLista();
+            salvarLista();
+        }
+        
+        // Função para remover item
+        function removerItem(id) {
+            listaCompras = listaCompras.filter(item => item.id !== id);
+            renderizarLista();
+            salvarLista();
+        }
+        
+        // Função para editar item
+        function editarItem(id) {
+            const item = listaCompras.find(item => item.id === id);
+            if (!item) return;
+            
+            const novoNome = prompt('Editar nome do item:', item.nome);
+            if (novoNome === null || novoNome.trim() === '') return;
+            
+            item.nome = novoNome.trim();
+            renderizarLista();
+            salvarLista();
+        }
+        
+        // Função para alterar quantidade
+        function alterarQuantidade(id, operacao) {
+            const item = listaCompras.find(item => item.id === id);
+            if (!item) return;
+            
+            if (operacao === 'aumentar') {
+                item.quantidade += 1;
+            } else if (operacao === 'diminuir' && item.quantidade > 1) {
+                item.quantidade -= 1;
+            }
+            
+            renderizarLista();
+            salvarLista();
+        }
+        
+        // Função para marcar como comprado
+        function toggleComprado(id) {
+            const item = listaCompras.find(item => item.id === id);
+            if (!item) return;
+            
+            item.comprado = !item.comprado;
+            renderizarLista();
+            salvarLista();
+        }
+        
+        // Função para limpar toda a lista
+        function limparLista() {
+            if (listaCompras.length === 0) {
+                alert('A lista já está vazia!');
+                return;
+            }
+            
+            if (confirm('Tem certeza que deseja limpar toda a lista de compras?')) {
+                listaCompras = [];
+                renderizarLista();
+                salvarLista();
+            }
+        }
+        
+        // Função para imprimir a lista
+        function imprimirLista() {
+            if (listaCompras.length === 0) {
+                alert('Não há itens na lista para imprimir.');
+                return;
+            }
+            
+            window.print();
+        }
+        
+        // Função para exportar como planilha
+        function exportarPlanilha() {
+            if (listaCompras.length === 0) {
+                alert('Não há itens na lista para exportar.');
+                return;
+            }
+            
+            // Criar cabeçalho CSV
+            let csv = 'Status,Item,Quantidade,Categoria\n';
+            
+            // Adicionar cada item
+            listaCompras.forEach(item => {
+                const status = item.comprado ? 'COMPRADO' : 'PENDENTE';
+                const linha = `"${status}","${item.nome}","${item.quantidade}","${formatarCategoria(item.categoria)}"\n`;
+                csv += linha;
+            });
+            
+            // Criar blob e link para download
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            
+            link.setAttribute('href', url);
+            link.setAttribute('download', `lista_compras_${formatarData(new Date())}.csv`);
+            link.style.visibility = 'hidden';
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+        
+        // Função para formatar data para o nome do arquivo
+        function formatarData(data) {
+            const dia = String(data.getDate()).padStart(2, '0');
+            const mes = String(data.getMonth() + 1).padStart(2, '0');
+            const ano = data.getFullYear();
+            return `${dia}-${mes}-${ano}`;
+        }
+        
+        // Função para renderizar a lista
+        function renderizarLista() {
+            // Limpar a lista atual
+            listaElement.innerHTML = '';
+            
+            // Contadores
+            const totalItens = listaCompras.length;
+            const itensComprados = listaCompras.filter(item => item.comprado).length;
+            
+            // Atualizar contadores
+            totalItensElement.textContent = `${totalItens} ${totalItens === 1 ? 'item' : 'itens'} na lista`;
+            itensCompradosElement.textContent = `${itensComprados} comprados`;
+            
+            // Se a lista estiver vazia
+            if (listaCompras.length === 0) {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td colspan="5" style="text-align: center; padding: 2rem; color: var(--gray);">
+                        <i class="fas fa-shopping-basket" style="font-size: 2rem; margin-bottom: 1rem; display: block;"></i>
+                        <p>Sua lista de compras está vazia.</p>
+                        <p>Adicione itens usando o formulário acima.</p>
+                    </td>
+                `;
+                listaElement.appendChild(tr);
+                return;
+            }
+            
+            // Adicionar cada item à lista
+            listaCompras.forEach(item => {
+                const tr = document.createElement('tr');
+                
+                // Ícone baseado na categoria
+                let iconeCategoria = 'fas fa-box';
+                if (item.categoria === 'alimentos') iconeCategoria = 'fas fa-utensils';
+                if (item.categoria === 'bebidas') iconeCategoria = 'fas fa-wine-bottle';
+                if (item.categoria === 'limpeza') iconeCategoria = 'fas fa-pump-soap';
+                if (item.categoria === 'hortifruti') iconeCategoria = 'fas fa-carrot';
+                
+                tr.innerHTML = `
+                    <td>
+                        <button class="btn-comprado" onclick="toggleComprado(${item.id})">
+                            <i class="fas fa-${item.comprado ? 'check-circle' : 'circle'}"></i>
+                            ${item.comprado ? 'Comprado' : 'Comprar'}
+                        </button>
+                    </td>
+                    <td class="${item.comprado ? 'comprado' : ''}">
+                        <i class="${iconeCategoria}" style="margin-right: 10px; color: var(--primary);"></i>
+                        ${item.nome}
+                    </td>
+                    <td>
+                        <div class="quantidade-controle">
+                            <button class="btn-quantidade" onclick="alterarQuantidade(${item.id}, 'diminuir')">-</button>
+                            <span class="quantidade-value">${item.quantidade}</span>
+                            <button class="btn-quantidade" onclick="alterarQuantidade(${item.id}, 'aumentar')">+</button>
+                        </div>
+                    </td>
+                    <td>${formatarCategoria(item.categoria)}</td>
+                    <td>
+                        <div class="acoes">
+                            <button class="btn-editar" onclick="editarItem(${item.id})">
+                                <i class="fas fa-edit"></i> Editar
+                            </button>
+                            <button class="btn-excluir" onclick="removerItem(${item.id})">
+                                <i class="fas fa-trash"></i> Excluir
+                            </button>
+                        </div>
+                    </td>
+                `;
+                
+                listaElement.appendChild(tr);
+            });
+        }
+        
+        // Função para formatar o nome da categoria
+        function formatarCategoria(categoria) {
+            const categorias = {
+                'alimentos': 'Alimentos',
+                'bebidas': 'Bebidas',
+                'limpeza': 'Limpeza',
+                'hortifruti': 'Hortifruti',
+                'outros': 'Outros'
+            };
+            
+            return categorias[categoria] || categoria;
+        }
+        
+        // Função para salvar a lista no localStorage
+        function salvarLista() {
+            localStorage.setItem('listaCompras', JSON.stringify(listaCompras));
+        }
+        
+        // Função para carregar la lista do localStorage
+        function carregarLista() {
+            const listaSalva = localStorage.getItem('listaCompras');
+            if (listaSalva) {
+                listaCompras = JSON.parse(listaSalva);
+            }
+            renderizarLista();
+        }
+        
+        // Inicializar a lista
+        document.addEventListener('DOMContentLoaded', function() {
+            carregarLista();
+            
+            // Permitir adicionar item pressionando Enter
+            document.getElementById('item').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    adicionarItem();
+                }
+            });
+            
+            // Menu mobile toggle
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navMenu = document.querySelector('nav ul');
+            
+            if (menuToggle && navMenu) {
+                menuToggle.addEventListener('click', function() {
+                    navMenu.classList.toggle('active');
+                    
+                    // Animações dos spans do menu hamburger
+                    const spans = menuToggle.querySelectorAll('span');
+                    if (navMenu.classList.contains('active')) {
+                        spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+                        spans[1].style.opacity = '0';
+                        spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
+                    } else {
+                        spans[0].style.transform = 'none';
+                        spans[1].style.opacity = '1';
+                        spans[2].style.transform = 'none';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

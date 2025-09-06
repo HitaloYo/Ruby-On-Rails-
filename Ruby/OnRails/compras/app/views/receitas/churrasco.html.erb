@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YoYo Compras - Churrasco Brasileiro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4b6cb7;
+            --secondary: #182848;
+            --accent: #FE6B8B;
+            --accent-gradient: linear-gradient(45deg, #FF8E53, #FE6B8B);
+            --light: #f5f7fa;
+            --dark: #333;
+            --gray: #555;
+            --border-radius: 12px;
+            --box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--dark);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* NAVBAR MODERNA */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            color: var(--dark);
+            padding: 15px 0;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(75, 108, 183, 0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            transition: var(--transition);
+            margin-right: 30px;
+        }
+        
+        .logo:hover {
+            transform: translateY(-2px);
+        }
+        
+        .logo i {
+            color: #FFD700;
+            font-size: 2rem;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* Navegação moderna */
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        nav li {
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            position: relative;
+            margin: 0 2px;
+        }
+        
+        nav li:not(.btn-container):hover {
+            background: rgba(75, 108, 183, 0.05);
+        }
+        
+        nav a {
+            color: var(--dark);
+            text-decoration: none;
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        
+        nav a i {
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+        }
+        
+        nav a:hover {
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+        
+        .ativo {
+            background: rgba(255, 215, 0, 0.15);
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .ativo::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 20%;
+            width: 60%;
+            height: 3px;
+            background: var(--accent-gradient);
+            border-radius: 3px;
+        }
+        
+        .btn-creme {
+            background: var(--accent-gradient);
+            color: white;
+            padding: 12px 22px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(254, 107, 139, 0.3);
+            margin-left: 5px;
+        }
+        
+        .btn-creme:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(254, 107, 139, 0.4);
+        }
+        
+        /* Menu mobile */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-around;
+            width: 30px;
+            height: 25px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+        }
+        
+        .menu-toggle span {
+            width: 100%;
+            height: 3px;
+            background-color: var(--primary);
+            border-radius: 2px;
+            transition: var(--transition);
+        }
+        
+        /* ESTILOS DA RECEITA - Design Atualizado */
+        .receita-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 2.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            background: white;
+        }
+
+        .receita-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid rgba(75, 108, 183, 0.1);
+        }
+
+        .receita-titulo {
+            color: var(--primary);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .receita-descricao {
+            color: var(--gray);
+            font-style: italic;
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .receita-info {
+            display: flex;
+            justify-content: center;
+            gap: 2.5rem;
+            margin-bottom: 2.5rem;
+            background: linear-gradient(135deg, rgba(75, 108, 183, 0.08) 0%, rgba(254, 107, 139, 0.08) 100%);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .info-item i {
+            font-size: 1.3rem;
+            color: var(--accent);
+        }
+
+        .receita-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .ingredientes-section, .preparo-section {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+            border-left: 4px solid var(--primary);
+        }
+
+        .ingredientes-section {
+            border-left-color: #4b6cb7;
+        }
+
+        .preparo-section {
+            border-left-color: #FE6B8B;
+        }
+
+        .ingredientes-section h2, .preparo-section h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid rgba(75, 108, 183, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ingredientes-section ul, .preparo-section ol {
+            padding-left: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .ingredientes-section li, .preparo-section li {
+            margin-bottom: 0.8rem;
+            padding-left: 0.5rem;
+        }
+
+        .ingredientes-section li {
+            color: var(--secondary);
+        }
+
+        .preparo-section li {
+            color: var(--dark);
+        }
+
+        .dicas-section {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(254, 107, 139, 0.1) 100%);
+            padding: 1.8rem;
+            border-radius: var(--border-radius);
+            border-left: 4px solid #ffd700;
+            margin-bottom: 2.5rem;
+        }
+
+        .dicas-section h3 {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-voltar {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: var(--transition);
+            font-weight: 500;
+            box-shadow: var(--box-shadow);
+        }
+
+        .btn-voltar:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Footer melhorado */
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 40px;
+            color: var(--gray);
+            border-top: 1px solid #ddd;
+        }
+        
+        footer p {
+            margin-bottom: 10px;
+        }
+        
+        /* Responsividade */
+        @media (max-width: 1024px) {
+            nav ul {
+                gap: 6px;
+            }
+            
+            nav a {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .btn-creme {
+                padding: 10px 18px;
+                font-size: 0.9rem;
+            }
+            
+            .logo {
+                margin-right: 20px;
+            }
+        }
+        
+        @media (max-width: 900px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            nav ul {
+                justify-content: center;
+            }
+            
+            .menu-toggle {
+                display: flex;
+                position: absolute;
+                top: 20px;
+                right: 20px;
+            }
+            
+            nav ul {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                gap: 10px;
+                margin-top: 15px;
+            }
+            
+            nav ul.active {
+                display: flex;
+            }
+            
+            nav li {
+                width: 100%;
+                text-align: center;
+            }
+            
+            .ativo::after {
+                display: none;
+            }
+            
+            .logo {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+
+            .receita-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .receita-info {
+                flex-direction: column;
+                gap: 1.2rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 1.6rem;
+            }
+            
+            .logo i {
+                font-size: 1.8rem;
+            }
+            
+            .btn-creme {
+                justify-content: center;
+            }
+            
+            .receita-titulo {
+                font-size: 2rem;
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .receita-container {
+                padding: 1.5rem;
+            }
+            
+            .ingredientes-section, .preparo-section {
+                padding: 1.5rem;
+            }
+        }
+
+        /* Efeito de foco para melhor acessibilidade */
+        button:focus, a:focus {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="/" class="logo">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>YoYo Compras</span>
+                </a>
+                
+                <button class="menu-toggle" aria-label="Abrir menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                
+                <nav>
+                    <ul>
+                        <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
+                        <li><a href="/compras/comp"><i class="fas fa-calendar-alt"></i> Compras</a></li> 
+                        
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="receita-container">
+            <div class="receita-header">
+                <h1 class="receita-titulo">
+                    <span>🔥</span>
+                    <span>Churrasco Brasileiro</span>
+                </h1>
+                <p class="receita-descricao">Cortes selecionados e marinadas especiais para um churrasco perfeito</p>
+            </div>
+
+            <div class="receita-info">
+                <div class="info-item">
+                    <i class="fas fa-clock"></i>
+                    <span>2h 30min</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-users"></i>
+                    <span>10 porções</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-fire"></i>
+                    <span>Difícil</span>
+                </div>
+            </div>
+
+            <div class="receita-content">
+                <div class="ingredientes-section">
+                    <h2><i class="fas fa-list"></i> Ingredientes</h2>
+                    <h3>Carnes:</h3>
+                    <ul>
+                        <li>1kg de picanha</li>
+                        <li>500g de linguiça calabresa</li>
+                        <li>1kg de costela bovina</li>
+                        <li>500g de coração de frango</li>
+                        <li>500g de asinha de frango</li>
+                    </ul>
+                    <h3>Marinada:</h3>
+                    <ul>
+                        <li>Sal grosso à vontade</li>
+                        <li>4 limões</li>
+                        <li>4 dentes de alho amassados</li>
+                        <li>1 cebola ralada</li>
+                        <li>Pimenta do reino</li>
+                        <li>Cheiro-verde</li>
+                        <li>1 cerveja (opcional)</li>
+                    </ul>
+                    <h3>Acompanhamentos:</h3>
+                    <ul>
+                        <li>Farofa</li>
+                        <li>Vinagrete</li>
+                        <li>Pão de alho</li>
+                        <li>Queijo coalho</li>
+                    </ul>
+                </div>
+
+                <div class="preparo-section">
+                    <h2><i class="fas fa-utensils"></i> Modo de Preparo</h2>
+                    <h3>Preparação:</h3>
+                    <ol>
+                        <li>Tempere as carnes com sal grosso 2 horas antes</li>
+                        <li>Faça a marinada com limão, alho, cebola e temperos</li>
+                        <li>Deixe o frango na marinada por pelo menos 1 hora</li>
+                        <li>Prepare a churrasqueira com carvão vegetal</li>
+                        <li>Aguarde até formar brasa (carvão com cinza white)</li>
+                    </ol>
+                    <h3>Assar:</h3>
+                    <ol>
+                        <li>Comece pela costela (demora mais)</li>
+                        <li>Coloque a picanha com a gordura para baixo primeiro</li>
+                        <li>Vire a carne apenas quando soltar naturalmente da grelha</li>
+                        <li>Use tesoura para cortar a picanha em fatias</li>
+                        <li>Sirva imediatamente com farofa e vinagrete</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="dicas-section">
+                <h3><i class="fas fa-lightbulb"></i> Dicas do Churrasqueiro</h3>
+                <p>A melhor carne para churrasco é aquela que tem gordura marmorizada. Deixe o sal grosso grudentar bem na carne antes de levar à churrasqueira.</p>
+            </div>
+
+            <div style="text-align: center;">
+                <a href="/" class="btn-voltar">
+                    <i class="fas fa-arrow-left"></i> Voltar para Home
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>© 2023 YoYo Compras - Todos os direitos reservados</p>
+            <p>Desenvolvido com <i class="fas fa-heart" style="color: #FE6B8B;"></i> para amantes de boa comida</p>
+        </div>
+    </footer>
+
+    <script>
+        // Menu mobile toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navMenu = document.querySelector('nav ul');
+            
+            if (menuToggle && navMenu) {
+                menuToggle.addEventListener('click', function() {
+                    navMenu.classList.toggle('active');
+                    
+                    // Animações dos spans do menu hamburger
+                    const spans = menuToggle.querySelectorAll('span');
+                    if (navMenu.classList.contains('active')) {
+                        spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+                        spans[1].style.opacity = '0';
+                        spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
+                    } else {
+                        spans[0].style.transform = 'none';
+                        spans[1].style.opacity = '1';
+                        spans[2].style.transform = 'none';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
